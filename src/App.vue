@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <h1>Этап I: "Орфография"</h1>
+    <h1>Этап III: "Семантика"</h1>
     <div class="header">
       <div class="stages">
         <div class="stage">I Этап</div>
@@ -27,9 +27,9 @@
         <div class="number-question">10</div>
       </div>
     </div>
-    <h3 class="main-label">Сопоставьте термин и определение</h3>
     
     <div class="questions-container">
+      <h3 class="main-label">Сопоставьте термин и определение</h3>
       <div 
         class="question" 
         v-for="(question, index) in questions" 
@@ -37,11 +37,12 @@
         :class="{ correct: questionStatus[question.text] === true, wrong: questionStatus[question.text] === false }"
       >
         <div class="answers-dropzone" 
+             :class="{ 'dropzone-active': question.droppedAnswer !== null }"
              @touchend="handleAnswerDrop(question)"
         >
           <div class="dropzone-label">{{ question.droppedAnswer || 'Перетащите ответ сюда' }}</div>
         </div>
-        <div class="question-text" style="font-size: 11px; font-weight: bold;">{{ question.text }}</div>
+        <div class="question-text" style="font-size: 14px; font-weight: bold;">{{ question.text }}</div>
 
       </div>
     </div>
@@ -58,7 +59,12 @@
       >
         {{ answer.text }}
       </div>
+      <button @click="checkAllAnswers" :disabled="!allAnswersDropped" class="check-button">
+        Ответить
+      </button>
     </div>
+
+    
 
     <div 
       class="dragging-answer" 
@@ -68,9 +74,7 @@
       {{ draggedAnswerText }}
     </div>
 
-    <button @click="checkAllAnswers" :disabled="!allAnswersDropped" class="check-button">
-      Ответить
-    </button>
+
   </div>
 </template>
 
@@ -92,6 +96,7 @@ export default {
       questionStatus: {}, // Хранит статус правильности ответов
       isDragging: false,
       draggingAnswerStyle: {},
+      // allAnswersDropped: false
     };
   },
   computed: {
@@ -106,8 +111,17 @@ export default {
       if (droppedAnswer) {
         this.markAnswerAsPlaced(question, droppedAnswer);
         this.removeDroppedAnswer(droppedAnswer);
+
+        question.dropzoneStyle = { active: true };
       }
     },
+
+    resetDropzone(question) {
+      question.droppedAnswer = null; // Сбрасываем ответ
+      question.hasDroppedAnswer = false; // Убираем отметку о сброшенном ответе
+      question.dropzoneStyle = {}; // Сбрасываем стили
+    },
+
 
     removeDroppedAnswer(answerText) {
       this.answers = this.answers.filter(a => a.text !== answerText);
@@ -146,8 +160,6 @@ export default {
       if (!touch) return; // Проверяем, есть ли touch
 
       const dropzoneUnderTouch = document.elementFromPoint(touch.clientX, touch.clientY);
-
-      // Проверяем, является ли элемент дроп-зоной или находится ли он внутри дроп-зоны
       const dropzone = dropzoneUnderTouch ? dropzoneUnderTouch.closest('.answers-dropzone') : null;
 
       if (dropzone) {
@@ -176,6 +188,14 @@ export default {
       document.removeEventListener('touchmove', this.onDrag);
       document.removeEventListener('touchmove', this.preventDefaultScroll);
       document.removeEventListener('touchend', this.endDrag);
+    },
+    
+    // Добавьте метод для сброса стилей дроп-зоны
+    resetDropzoneStyles() {
+      this.questions.forEach(question => {
+        question.dropzoneStyle = {}; // Сбрасываем стиль на пустой объект
+        question.dropzoneStyle = { backgroundColor: 'white' };
+      });
     },
 
     preventDefaultScroll(event) {
@@ -277,14 +297,14 @@ export default {
 
 .correct {
   background-color: #6DD97D; /* Зеленый цвет для правильных ответов */
-  border: 2px #151044 solid;
+  /* border: 2px #151044 solid; */
   color: white;
   border-radius: 15px;
 }
 
 .wrong {
   background-color: #FF6161; /* Красный цвет для неправильных ответов */
-  border: 2px #151044 solid;
+  /* border: 2px #151044 solid; */
   color: white;
   border-radius: 15px;
 }
@@ -297,10 +317,11 @@ export default {
   transform: translateX(13%);
   width: 80%;
   margin-top: 15px;
+  margin-bottom: 60px;
+  min-height: 200px;
 }
 
 .answer {
-  /* background: radial-gradient(circle, #3215f2, #007bff); */
   background-color: white;
   color: #4a5f8a;
   border-radius: 15px;
@@ -310,14 +331,13 @@ export default {
   text-align: center;
   cursor: grab;
   user-select: none;
-  font-size: 13px;
+  font-size: 14px;
   transition: transform 0.2s, opacity 0.5s;
-  border: 2px #151044 solid;
+  border: 1px #151044 solid;
   font-family: 'KelsonSansBG-Normal', sans-serif;
 }
 
 .dragging-answer {
-  /* background: radial-gradient(circle, #3215f2, #007bff); */
   background-color: white;
   color: #4a5f8a;
   border-radius: 15px;
@@ -326,38 +346,33 @@ export default {
   width: 257px;
   height: 26px;
   text-align: center;
-  font-size: 13px;
-  border: 2px #151044 solid;
+  font-size: 14px;
+  border: 1px #151044 solid;
   user-select: none;
-  /* transition: transform 0.2s; */
   pointer-events: none;
   font-family: 'KelsonSansBG-Normal', sans-serif;
 }
 
 .check-button {
+  /* display: flex;
+  justify-content: center; */
   padding: 10px 15px;
-  background-color: #4a5f8a;
-  color: white;
-  border: none;
-  cursor: pointer;
-  border: #151044;
-  border-radius: 15px;
-  position: fixed;       
-  bottom: 40px;    
-  left: 11%;     
-  width: 80%;
-  font-family: 'KelsonSansBG-Bold', sans-serif;
+  background-color: #4a5f8a; 
+  color: white; 
+  border: none; 
+  cursor: pointer; 
+  border-radius: 15px; 
+  margin-top: auto; 
+  transition: background-color 0.3s; 
+  z-index: 1000;
+  width: 300px;
+  transform: translateX(-2%);
 }
 
 .check-button:disabled {
   background-color: #6c757d;
   border: #151044;
   border-radius: 15px;
-  position: fixed;       
-  bottom: 40px;   
-  left: 11%;  
-  width: 80%;    
-  font-family: 'KelsonSansBG-Bold', sans-serif;
 }
 
 .dropzone-label {
@@ -365,17 +380,31 @@ export default {
   font-size: 15px;
 }
 
+.dropzone-active {
+  background-color: white !important;
+  color: #4a5f8a;
+  border-radius: 15px;
+  padding: 8px;
+  margin: 5px;
+  width: 100px;
+  text-align: center;
+  font-size: 14px;
+  transition: transform 0.2s, opacity 0.5s;
+  border: 1px #151044 solid;
+  font-family: 'KelsonSansBG-Normal', sans-serif;
+}
+
 .answers-dropzone {
   background-color: #e9ecef;
   color: #4a5f8a;
-  min-height: 35px; /* Увеличьте минимальную высоту */
+  min-height: 35px;
   margin-top: 10px; 
   border-radius: 25px;
   width: 80%;
   transform: translateX(0%);
-  display: flex; /* Добавьте flex для центрирования текста */
-  align-items: center; /* Центрируйте по вертикали */
-  justify-content: center; /* Центрируйте по горизонтали */
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
 }
 
 h1 {
@@ -383,6 +412,7 @@ h1 {
   font-family: 'KelsonSansBG-Bold', sans-serif;
   font-size: 20px;
   color: #4a5f8a;
+  margin-bottom: 10px;
 }
 
 .stages, .scores, .quality-questions {
@@ -394,10 +424,10 @@ h1 {
 }
 
 .stages {
-  margin: 0;
   padding: 0;
   font-size: 14px;
   font-weight: bold;
+  margin-bottom: 5px;
 }
 
 .stage, .number-question {
@@ -420,7 +450,8 @@ h1 {
 }
 
 .number-question {
-  margin-top: 15px;
+  margin-top: 12px;
+  margin-bottom: 7px;
   border: 1px solid #4a5f8a;
   border-radius: 50%;
   display: flex;               
