@@ -62,6 +62,9 @@
       <button @click="checkAllAnswers" :disabled="!allAnswersDropped" class="check-button">
         Ответить
       </button>
+      <button @click="resetAnswers" :disabled="isChecked" class="reset-button">
+        Сбросить
+      </button>
     </div>
 
     
@@ -96,7 +99,7 @@ export default {
       questionStatus: {}, // Хранит статус правильности ответов
       isDragging: false,
       draggingAnswerStyle: {},
-      // allAnswersDropped: false
+      isChecked: false,
     };
   },
   computed: {
@@ -114,6 +117,25 @@ export default {
 
         question.dropzoneStyle = { active: true };
       }
+    },
+
+    resetAnswers() {
+      // Сбрасываем все droppedAnswers и hasDroppedAnswer для вопросов
+      this.questions.forEach(question => {
+        question.droppedAnswer = null;
+        question.hasDroppedAnswer = false;
+      });
+
+      // Восстанавливаем все ответы
+      this.answers = [
+        { text: 'Трейдер', question: 'Участник финансового рынка, который продает и покупает финансовые активы, с целью получение прибыли от изменения цен.' },
+        { text: 'Вендор', question: 'Поставщик, который продает и продвигает товары и услуги под собственным брендом.' },
+        { text: 'Девелопер', question: 'Специалист, занимающийся разработкой ПО и приложений.' }
+      ];
+
+      // Сбрасываем статус правильности ответов
+      this.questionStatus = {};
+      this.isChecked = false; // Сбрасываем состояние проверки
     },
 
     resetDropzone(question) {
@@ -208,12 +230,13 @@ export default {
 
     checkAllAnswers() {
       this.questionStatus = {}; // Сброс статуса перед проверкой
+      this.isChecked = true; // Устанавливаем состояние проверки в true
 
       const answers = [
         { text: 'Трейдер', question: 'Участник финансового рынка, который продает и покупает финансовые активы, с целью получение прибыли от изменения цен.' },
         { text: 'Вендор', question: 'Поставщик, который продает и продвигает товары и услуги под собственным брендом.' },
         { text: 'Девелопер', question: 'Специалист, занимающийся разработкой ПО и приложений.' }
-      ]
+      ];
 
       this.questions.forEach(question => {
         const correctAnswer = answers.find(a => a.question.trim() === question.text.trim());
@@ -366,7 +389,7 @@ export default {
   transition: background-color 0.3s; 
   z-index: 1000;
   width: 300px;
-  transform: translateX(-2%);
+  /* transform: translateX(-2%); */
 }
 
 .check-button:disabled {
@@ -480,4 +503,22 @@ html, body {
   height: 100%;
   width: 100%;
 }
+
+.reset-button {
+  padding: 10px 15px;
+  background-color: #ff4d4d; /* Красный цвет для кнопки сброса */
+  color: white; 
+  border: none; 
+  cursor: pointer; 
+  border-radius: 15px; 
+  margin-top: 10px; /* Отступ сверху */
+  transition: background-color 0.3s; 
+  z-index: 1000;
+  width: 300px;
+}
+
+.reset-button:hover {
+  background-color: #ff1a1a; /* Темнее при наведении */
+}
+
 </style>
