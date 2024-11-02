@@ -385,7 +385,6 @@ export default {
   color: #4a5f8a;
   border-radius: 15px;
   padding: 8px;
-  margin: 5px;
   width: 100px;
   text-align: center;
   font-size: 14px;
@@ -397,7 +396,7 @@ export default {
 .answers-dropzone {
   background-color: #e9ecef;
   color: #4a5f8a;
-  min-height: 35px;
+  min-height: 40px;
   margin-top: 10px; 
   border-radius: 25px;
   width: 80%;
