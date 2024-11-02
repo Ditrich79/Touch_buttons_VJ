@@ -396,7 +396,7 @@ export default {
 .answers-dropzone {
   background-color: #e9ecef;
   color: #4a5f8a;
-  min-height: 40px;
+  min-height: 35px;
   margin-top: 10px; 
   border-radius: 25px;
   width: 80%;
