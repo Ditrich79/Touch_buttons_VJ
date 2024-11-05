@@ -302,8 +302,9 @@ export default {
   width: 100vw; 
   overflow: auto;
   background-image: url("@/assets/img/background-img.png");
-  background-size: cover;           
-  background-position: center;   
+  background-size: 100% 100%;           
+  background-position: center center; 
+  background-repeat: no-repeat;  
 }
 
 .questions-container {
@@ -333,7 +334,10 @@ export default {
   /* font-family: 'KelsonSansBG-Normal', sans-serif; */
   padding: 5px;
   color: #4a5f8a;
-  
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  -ms-hyphens: auto;
 }
 
 .correct {
@@ -355,20 +359,20 @@ export default {
   flex-direction: column;
   justify-content: center;
   left: 50%;
-  transform: translateX(13%);
-  width: 80%;
+  transform: translateX(16%);
+  width: 75%;
   margin-top: 15px;
   margin-bottom: 60px;
-  min-height: 200px;
+  min-height: 180px;
 }
 
 .answer {
   background-color: white;
   color: #4a5f8a;
-  border-radius: 15px;
+  border-radius: 25px;
   padding: 8px;
   margin: 5px;
-  width: 100px;
+  /* width: 100px; */
   text-align: center;
   cursor: grab;
   user-select: none;
@@ -509,10 +513,10 @@ html, body {
   border: none; 
   cursor: pointer; 
   border-radius: 15px; 
-  margin-top: 3px; 
+  margin-top: 10px; 
   transition: background-color 0.3s; 
   z-index: 1000;
-  width: 300px;
+  width: 283px;
   /* transform: translateX(-2%); */
 }
 
@@ -529,15 +533,15 @@ html, body {
   border: none; 
   cursor: pointer; 
   border-radius: 15px; 
-  margin-bottom: 5px;
+  /* margin-bottom: 5px; */
   margin-top: auto;
   transition: background-color 0.3s; 
   z-index: 1000;
-  width: 300px;
+  width: 283px;
 }
 
 .reset-button:hover {
-  background-color: #ff1a1a; /* Темнее при наведении */
+  background-color: #ff1a1a;
 }
 
 </style>
