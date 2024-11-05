@@ -59,12 +59,15 @@
       >
         {{ answer.text }}
       </div>
+
+      <button v-if="isAnswerPlaced" @click="resetAnswers" :disabled="isChecked" class="reset-button">
+        Сбросить
+      </button>
+
       <button @click="checkAllAnswers" :disabled="!allAnswersDropped" class="check-button">
         Ответить
       </button>
-      <button @click="resetAnswers" :disabled="isChecked" class="reset-button">
-        Сбросить
-      </button>
+
     </div>
 
     
@@ -100,6 +103,7 @@ export default {
       isDragging: false,
       draggingAnswerStyle: {},
       isChecked: false,
+      isAnswerPlaced: false,
     };
   },
   computed: {
@@ -116,6 +120,8 @@ export default {
         this.removeDroppedAnswer(droppedAnswer);
 
         question.dropzoneStyle = { active: true };
+
+        this.isAnswerPlaced = true;
       }
     },
 
@@ -136,12 +142,19 @@ export default {
       // Сбрасываем статус правильности ответов
       this.questionStatus = {};
       this.isChecked = false; // Сбрасываем состояние проверки
+
+      this.isAnswerPlaced = false;
     },
 
     resetDropzone(question) {
       question.droppedAnswer = null; // Сбрасываем ответ
       question.hasDroppedAnswer = false; // Убираем отметку о сброшенном ответе
       question.dropzoneStyle = {}; // Сбрасываем стили
+    },
+
+    checkIfAnyAnswersPlaced() {
+      // Проверяем, есть ли хотя бы один ответ, размещенный на дроп-зонах
+      this.isAnswerPlaced = this.questions.some(question => question.hasDroppedAnswer);
     },
 
 
@@ -193,6 +206,9 @@ export default {
             question.droppedAnswer = this.draggedAnswerText; // Обновляем droppedAnswer
             question.hasDroppedAnswer = true; // Отмечаем, что ответ был сброшен
             this.removeDroppedAnswer(this.draggedAnswerText); // Удаляем ответ из доступных
+
+            // Устанавливаем состояние isAnswerPlaced в true
+            this.isAnswerPlaced = true;
           } else {
             // Здесь можно добавить уведомление о том, что ответ уже сброшен
             console.log('Ответ уже сброшен на эту дроп-зону');
@@ -210,6 +226,8 @@ export default {
       document.removeEventListener('touchmove', this.onDrag);
       document.removeEventListener('touchmove', this.preventDefaultScroll);
       document.removeEventListener('touchend', this.endDrag);
+
+      this.checkIfAnyAnswersPlaced();
     },
     
     // Добавьте метод для сброса стилей дроп-зоны
@@ -281,7 +299,7 @@ export default {
   flex-direction: column;
   margin: 0;
   height: 100vh;
-  width: 100vw; /* Убедитесь, что ширина 100% */
+  width: 100vw; 
   overflow: auto;
   background-image: url("@/assets/img/background-img.png");
   background-size: cover;           
@@ -374,28 +392,6 @@ export default {
   user-select: none;
   pointer-events: none;
   font-family: 'KelsonSansBG-Normal', sans-serif;
-}
-
-.check-button {
-  /* display: flex;
-  justify-content: center; */
-  padding: 10px 15px;
-  background-color: #4a5f8a; 
-  color: white; 
-  border: none; 
-  cursor: pointer; 
-  border-radius: 15px; 
-  margin-top: auto; 
-  transition: background-color 0.3s; 
-  z-index: 1000;
-  width: 300px;
-  /* transform: translateX(-2%); */
-}
-
-.check-button:disabled {
-  background-color: #6c757d;
-  border: #151044;
-  border-radius: 15px;
 }
 
 .dropzone-label {
@@ -504,14 +500,37 @@ html, body {
   width: 100%;
 }
 
-.reset-button {
+.check-button {
+  /* display: flex;
+  justify-content: center; */
   padding: 10px 15px;
-  background-color: #ff4d4d; /* Красный цвет для кнопки сброса */
+  background-color: #4a5f8a; 
   color: white; 
   border: none; 
   cursor: pointer; 
   border-radius: 15px; 
-  margin-top: 10px; /* Отступ сверху */
+  margin-top: 3px; 
+  transition: background-color 0.3s; 
+  z-index: 1000;
+  width: 300px;
+  /* transform: translateX(-2%); */
+}
+
+.check-button:disabled {
+  background-color: #6c757d;
+  border: #151044;
+  border-radius: 15px;
+}
+
+.reset-button {
+  padding: 10px 15px;
+  background-color: #ff4d4d;
+  color: white; 
+  border: none; 
+  cursor: pointer; 
+  border-radius: 15px; 
+  margin-bottom: 5px;
+  margin-top: auto;
   transition: background-color 0.3s; 
   z-index: 1000;
   width: 300px;
