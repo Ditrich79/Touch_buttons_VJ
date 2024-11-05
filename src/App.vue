@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <h1>Этап III: "Семантика"</h1>
+    <h1>Этап III: "Терминология"</h1>
     <div class="header">
       <div class="stages">
         <div class="stage">I Этап</div>
@@ -59,7 +59,7 @@
       >
         {{ answer.text }}
       </div>
-
+      
       <button v-if="isAnswerPlaced" @click="resetAnswers" :disabled="isChecked" class="reset-button">
         Сбросить
       </button>
@@ -67,7 +67,7 @@
       <button @click="checkAllAnswers" :disabled="!allAnswersDropped" class="check-button">
         Ответить
       </button>
-
+      
     </div>
 
     
@@ -89,14 +89,14 @@ export default {
   data() {
     return {
       questions: [
-        { text: 'Участник финансового рынка, который продает и покупает финансовые активы, с целью получение прибыли от изменения цен.', droppedAnswer: null, hasDroppedAnswer: false, dropzoneStyle: {} },
-        { text: 'Поставщик, который продает и продвигает товары и услуги под собственным брендом.', droppedAnswer: null, hasDroppedAnswer: false, dropzoneStyle: {} },
-        { text: 'Специалист, занимающийся разработкой ПО и приложений.', droppedAnswer: null, hasDroppedAnswer: false, dropzoneStyle: {} }
+        { text: 'Файл с кодом, выполняющий определённые команды.', droppedAnswer: null, hasDroppedAnswer: false, dropzoneStyle: {} },
+        { text: 'Тег, который содержит название (заголовок) страницы.', droppedAnswer: null, hasDroppedAnswer: false, dropzoneStyle: {} },
+        { text: 'Структура данных, работающая по принципу "последним пришёл, первым вышел".', droppedAnswer: null, hasDroppedAnswer: false, dropzoneStyle: {} }
       ],
       answers: [
-        { text: 'Трейдер', question: 'Участник финансового рынка, который продает и покупает финансовые активы, с целью получение прибыли от изменения цен.' },
-        { text: 'Вендор', question: 'Поставщик, который продает и продвигает товары и услуги под собственным брендом.' },
-        { text: 'Девелопер', question: 'Специалист, занимающийся разработкой ПО и приложений.' }
+        { text: 'Скрипт', question: 'Файл с кодом, выполняющий определённые команды.' },
+        { text: 'Тайтл', question: 'Тег, который содержит название (заголовок) страницы.' },
+        { text: 'Стек', question: 'Структура данных, работающая по принципу "последним пришёл, первым вышел".' }
       ],
       draggedAnswerText: '',
       questionStatus: {}, // Хранит статус правильности ответов
@@ -134,9 +134,9 @@ export default {
 
       // Восстанавливаем все ответы
       this.answers = [
-        { text: 'Трейдер', question: 'Участник финансового рынка, который продает и покупает финансовые активы, с целью получение прибыли от изменения цен.' },
-        { text: 'Вендор', question: 'Поставщик, который продает и продвигает товары и услуги под собственным брендом.' },
-        { text: 'Девелопер', question: 'Специалист, занимающийся разработкой ПО и приложений.' }
+        { text: 'Скрипт', question: 'Файл с кодом, выполняющий определённые команды.' },
+        { text: 'Тайтл', question: 'Тег, который содержит название (заголовок) страницы.' },
+        { text: 'Стек', question: 'Структура данных, работающая по принципу "последним пришёл, первым вышел".' }
       ];
 
       // Сбрасываем статус правильности ответов
@@ -311,12 +311,12 @@ export default {
   display: flex;
   flex-direction: column; 
   justify-content: flex-start;
-  width: 90%;
+  width: 87%;
   height: auto;
   border-radius: 15px;
   /* border: 2px gray solid; */
   font-family: 'KelsonSansBG-Normal', sans-serif;
-  transform: translateX(5%);
+  transform: translateX(7%);
   background-color: white;
 }
 
@@ -332,7 +332,7 @@ export default {
 
 .question-text {
   /* font-family: 'KelsonSansBG-Normal', sans-serif; */
-  padding: 5px;
+  padding: 5px 10px;
   color: #4a5f8a;
   hyphens: auto;
   -webkit-hyphens: auto;
@@ -359,11 +359,11 @@ export default {
   flex-direction: column;
   justify-content: center;
   left: 50%;
-  transform: translateX(16%);
-  width: 75%;
-  margin-top: 15px;
-  margin-bottom: 60px;
-  min-height: 180px;
+  transform: translateX(21%);
+  width: 70%;
+  margin-top: 20px;
+  margin-bottom: 15px;
+  min-height: 175px;
 }
 
 .answer {
@@ -388,7 +388,7 @@ export default {
   border-radius: 15px;
   padding: 5px 5px;
   margin: 5px;
-  width: 257px;
+  width: 238px;
   height: 26px;
   text-align: center;
   font-size: 14px;
@@ -407,7 +407,7 @@ export default {
   background-color: white !important;
   color: #4a5f8a;
   border-radius: 15px;
-  padding: 8px;
+  padding: 6px;
   width: 100px;
   text-align: center;
   font-size: 14px;
@@ -419,10 +419,10 @@ export default {
 .answers-dropzone {
   background-color: #e9ecef;
   color: #4a5f8a;
-  min-height: 35px;
+  min-height: 31px;
   margin-top: 10px; 
   border-radius: 25px;
-  width: 80%;
+  width: 77%;
   transform: translateX(0%);
   display: flex; 
   align-items: center; 
@@ -487,7 +487,7 @@ h1 {
 .main-label {
   text-align: center;
   font-family: 'KelsonSansBG-Bold', sans-serif;
-  font-size: 18px;
+  font-size: 16px;
   color: #4a5f8a;
   margin-bottom: 0;
   margin-top: 10px;
@@ -517,6 +517,7 @@ html, body {
   transition: background-color 0.3s; 
   z-index: 1000;
   width: 283px;
+  margin-left: -12px;
   /* transform: translateX(-2%); */
 }
 
@@ -538,6 +539,7 @@ html, body {
   transition: background-color 0.3s; 
   z-index: 1000;
   width: 283px;
+  margin-left: -12px;
 }
 
 .reset-button:hover {
