@@ -70,8 +70,6 @@
       
     </div>
 
-    
-
     <div 
       class="dragging-answer" 
       v-if="isDragging" 
@@ -99,7 +97,7 @@ export default {
         { text: 'Стек', question: 'Структура данных, работающая по принципу "последним пришёл, первым вышел".' }
       ],
       draggedAnswerText: '',
-      questionStatus: {}, // Хранит статус правильности ответов
+      questionStatus: {}, 
       isDragging: false,
       draggingAnswerStyle: {},
       isChecked: false,
@@ -210,7 +208,6 @@ export default {
             // Устанавливаем состояние isAnswerPlaced в true
             this.isAnswerPlaced = true;
           } else {
-            // Здесь можно добавить уведомление о том, что ответ уже сброшен
             console.log('Ответ уже сброшен на эту дроп-зону');
           }
         }
@@ -230,7 +227,6 @@ export default {
       this.checkIfAnyAnswersPlaced();
     },
     
-    // Добавьте метод для сброса стилей дроп-зоны
     resetDropzoneStyles() {
       this.questions.forEach(question => {
         question.dropzoneStyle = {}; // Сбрасываем стиль на пустой объект
@@ -251,9 +247,9 @@ export default {
       this.isChecked = true; // Устанавливаем состояние проверки в true
 
       const answers = [
-        { text: 'Трейдер', question: 'Участник финансового рынка, который продает и покупает финансовые активы, с целью получение прибыли от изменения цен.' },
-        { text: 'Вендор', question: 'Поставщик, который продает и продвигает товары и услуги под собственным брендом.' },
-        { text: 'Девелопер', question: 'Специалист, занимающийся разработкой ПО и приложений.' }
+        { text: 'Скрипт', question: 'Файл с кодом, выполняющий определённые команды.' },
+        { text: 'Тайтл', question: 'Тег, который содержит название (заголовок) страницы.' },
+        { text: 'Стек', question: 'Структура данных, работающая по принципу "последним пришёл, первым вышел".' }
       ];
 
       this.questions.forEach(question => {
@@ -325,9 +321,9 @@ export default {
   margin: 2px;
   text-align: center;
   transition: background-color 0.3s;
-  display: flex; /* Добавьте flex для вертикального выравнивания */
-  flex-direction: column; /* Вертикальное направление для текста и дроп-зоны */
-  align-items: center; /* Центрируйте по горизонтали */
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
 }
 
 .question-text {
@@ -505,8 +501,6 @@ html, body {
 }
 
 .check-button {
-  /* display: flex;
-  justify-content: center; */
   padding: 10px 15px;
   background-color: #4a5f8a; 
   color: white; 
